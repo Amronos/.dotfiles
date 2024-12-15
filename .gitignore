@@ -1,0 +1,12 @@
+**/*
+!.gitignore
+!.bashrc
+!README.md
+!.config/
+!.config/nvim/
+!.config/nvim/*
+!.config/nvim/*/
+!.config/nvim/*/*
+!.config/nvim/*/*/
+!.config/nvim/*/*/*
+!.config/nvim/*/*/*/
