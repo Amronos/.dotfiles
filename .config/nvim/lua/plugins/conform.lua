@@ -9,7 +9,7 @@ return {
       python = { "isort", "black" },
       ["_"] = { "trim_whitespace" },
     },
-  
+
     format_on_save = {
       lsp_fallback = true,
     },
