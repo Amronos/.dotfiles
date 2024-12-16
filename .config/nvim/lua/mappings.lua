@@ -13,3 +13,5 @@ map("n", "<leader>fw", telescope_builtin.live_grep, { desc = "Telescope find wor
 map("n", "<leader>fs", telescope_builtin.grep_string, { desc = "Telescope find selection" })
 
 map("n", "<leader>gs", vim.cmd.Git)
+
+map("n", "<leader>u", vim.cmd.UndotreeToggle)
