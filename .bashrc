@@ -135,14 +135,6 @@ export CC=clang
 export CXX=clang++
 export BUILD_ARGS="--symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
 export BUILD_ARGS_SLOW="--parallel-workers=1 --executor sequential ${BUILD_ARGS}"
-alias cb="colcon build ${BUILD_ARGS} && ln -s build/compile_commands.json ./"
-alias cbs='export MAKEFLAGS="-j 1" && colcon build ${BUILD_ARGS_SLOW} && ln -s build/compile_commands.json ./'
-add-compile-commands() {
-    dest_dir=$(find src -name "${1}" -type d -print -quit)
-    if [ -z ${dest_dir} ]; then
-        echo "Failed to find destination directory"
-        return 1
-    fi 
-    ln -s ${PWD}/build_clang/${1}/compile_commands.json ${dest_dir}/compile_commands.json
-}
-alias add_compile_commands="add-compile-commands"
+alias cb="colcon build ${BUILD_ARGS}"
+alias cbs='export MAKEFLAGS="-j 1" && colcon build ${BUILD_ARGS_SLOW}'
+alias scc="ln -s build/compile_commands.json ./"
