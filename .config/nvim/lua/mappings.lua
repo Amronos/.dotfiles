@@ -4,7 +4,7 @@ local map = vim.keymap.set
 local nomap = vim.keymap.del
 local opts = { noremap = true, silent = true }
 
-map("n", "<leader>xx", vim.cmd.Ex)
+map("n", "<leader>xx", "<CMD>Oil<CR>")
 
 local telescope_builtin = require "telescope.builtin"
 map("n", "<leader>ff", telescope_builtin.find_files, { desc = "Telescope find files" })
