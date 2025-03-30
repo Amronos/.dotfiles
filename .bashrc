@@ -124,7 +124,8 @@ export GPG_TTY
 unset XDG_SESSION_TYPE
 
 # Source ROS
-source /opt/ros/jazzy/setup.bash
+alias sj='source /opt/ros/jazzy/setup.bash'
+alias sr='source /opt/ros/rolling/setup.bash'
 
 # Neovim Stuff
 export PATH="$PATH:/opt/nvim-linux64/bin"
@@ -138,3 +139,7 @@ export BUILD_ARGS_SLOW="--parallel-workers=1 --executor sequential ${BUILD_ARGS}
 alias cb="colcon build ${BUILD_ARGS}"
 alias cbs='export MAKEFLAGS="-j 1" && colcon build ${BUILD_ARGS_SLOW}'
 alias scc="ln -s build/compile_commands.json ./"
+
+# Scons for Godot
+alias sconsbuild="scons target=template_debug platform=linux arch=x86_64 precision=single"
+alias sconscc="scons compiledb=yes compile_commands.json"
