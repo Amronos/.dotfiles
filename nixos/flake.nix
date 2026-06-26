@@ -2,21 +2,12 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    home-manager = {
-      url = "github:nix-community/home-manager/master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:vic/import-tree";
+
+    wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
+    wrapper-modules.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs =
-    { self, nixpkgs, ... }@inputs:
-    {
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./configuration.nix
-          inputs.home-manager.nixosModules.default
-        ];
-      };
-    };
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }
