@@ -14,6 +14,13 @@
       environment.systemPackages = with pkgs; [
         pinentry-curses
         seahorse
+        yubioath-flutter
+        yubikey-manager
+        yubico-pam
+        yubikey-personalization
+        yubico-piv-tool
+        yubihsm-setup
+        yubihsm-shell
       ];
     };
 }
