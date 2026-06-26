@@ -8,7 +8,7 @@
         self.nixosModules.nixThings
         self.nixosModules.editorsMinimal
         self.nixosModules.fonts
-        self.nixosModules.git
+        self.nixosModules.gitMinimal
         self.nixosModules.languages
         self.nixosModules.security
         self.nixosModules.utilities
@@ -27,6 +27,10 @@
           vim = "nvim";
         };
       };
+
+nixpkgs.config.permittedInsecurePackages = [
+                "openclaw-2026.5.12"
+              ];
 
       environment.systemPackages = with pkgs; [
         openclaw
