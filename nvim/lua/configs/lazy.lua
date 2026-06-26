@@ -13,6 +13,9 @@ return {
 
   performance = {
     rtp = {
+      -- The nix wrapper serves the config from the store and puts it on the
+      -- rtp itself; lazy's rtp reset would remove it again.
+      reset = false,
       disabled_plugins = {
         "2html_plugin",
         "tohtml",
