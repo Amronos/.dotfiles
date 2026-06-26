@@ -1,13 +1,13 @@
 { ... }:
 {
   flake.nixosModules.git =
-    { pkgs, ... }:
+    { self, pkgs, ... }:
     {
+      imports = [
+        self.nixosModules.gitMinimal
+      ];
       environment.systemPackages = with pkgs; [
-        gh
-        git
         gitbutler
-        git-lfs
       ];
     };
 }
