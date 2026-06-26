@@ -10,6 +10,7 @@
         self.nixosModules.fonts
         self.nixosModules.gitMinimal
         self.nixosModules.languages
+        self.nixosModules.openclawTools
         self.nixosModules.security
         self.nixosModules.utilities
         self.nixosModules.virtualisation

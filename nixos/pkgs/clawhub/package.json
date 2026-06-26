@@ -1,0 +1,13 @@
+{
+  "name": "nixos-clawhub-wrapper",
+  "version": "0.23.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "clawhub": "bin/clawhub.js",
+    "clawdhub": "bin/clawhub.js"
+  },
+  "dependencies": {
+    "clawhub": "0.23.0"
+  }
+}

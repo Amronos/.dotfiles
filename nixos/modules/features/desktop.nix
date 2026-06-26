@@ -25,7 +25,6 @@
         hyprpaper
         hyprpolkitagent
         hyprshade
-        libsForQt5.qt5.qtwayland
         nautilus
         networkmanagerapplet
         qt5.qtwayland
