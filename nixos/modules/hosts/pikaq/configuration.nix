@@ -22,18 +22,20 @@
 
       programs.bash = {
         enable = true;
+        interactiveShellInit = ''
+          case ":$PATH:" in
+            *":$HOME/.local/bin:"*) ;;
+            *) export PATH="$HOME/.local/bin:$PATH" ;;
+          esac
+        '';
         shellAliases = {
           os-rebuild = "sudo nixos-rebuild switch --flake ~/.dotfiles/nixos#pikaq --print-build-logs";
           vim = "nvim";
         };
       };
 
-nixpkgs.config.permittedInsecurePackages = [
-                "openclaw-2026.5.12"
-              ];
-
-      environment.systemPackages = with pkgs; [
-        openclaw
-      ];
+      environment.variables = {
+        TERM = "xterm-256color";
+      };
     };
 }
