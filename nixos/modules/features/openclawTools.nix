@@ -11,6 +11,7 @@
           clawhub
           ffmpeg
           gifgrep
+          gog
           mcporter
           openai-whisper
           spotify-player
@@ -56,6 +57,42 @@
       };
 
       summarizeVersion = "0.20.1";
+
+      gogVersion = "0.31.1";
+
+      gogBinary = pkgs.stdenvNoCC.mkDerivation {
+        pname = "gog";
+        version = gogVersion;
+
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+
+        src =
+          if pkgs.stdenv.hostPlatform.system == "x86_64-linux" then
+            pkgs.fetchurl {
+              url = "https://github.com/openclaw/gogcli/releases/download/v${gogVersion}/gogcli_${gogVersion}_linux_amd64.tar.gz";
+              hash = "sha256-X1w164xWA6We4erzGQlGP06MX2RRMNmkKWVxlmp3rvI=";
+            }
+          else if pkgs.stdenv.hostPlatform.system == "aarch64-linux" then
+            pkgs.fetchurl {
+              url = "https://github.com/openclaw/gogcli/releases/download/v${gogVersion}/gogcli_${gogVersion}_linux_arm64.tar.gz";
+              hash = "sha256-cFxDxIvDkpfwAUNEpHIUUy3ZmGmOWkhVJHOIzfv5SYs=";
+            }
+          else
+            throw "gog is only packaged for Linux in this configuration";
+
+        sourceRoot = ".";
+
+        installPhase = ''
+          runHook preInstall
+
+          install -Dm755 gog "$out/libexec/gog"
+          makeWrapper "$out/libexec/gog" "$out/bin/gog" \
+            --set-default GOG_KEYRING_BACKEND file \
+            --run 'password_file="''${GOG_KEYRING_PASSWORD_FILE:-$HOME/.config/gogcli/keyring-password}"; if [ -z "''${GOG_KEYRING_PASSWORD:-}" ] && [ -r "$password_file" ]; then export GOG_KEYRING_PASSWORD="$(<"$password_file")"; fi'
+
+          runHook postInstall
+        '';
+      };
 
       xurlBinary = pkgs.stdenvNoCC.mkDerivation {
         pname = "xurl";
@@ -105,6 +142,8 @@
         };
 
         gifgrep = gifgrepBinary;
+
+        gog = gogBinary;
 
         summarize =
           let
