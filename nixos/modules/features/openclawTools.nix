@@ -7,11 +7,14 @@
         with pkgs;
         with self.packages.${pkgs.stdenv.hostPlatform.system};
         [
+          blogwatcher
           clawhub
           ffmpeg
+          gifgrep
           mcporter
           openai-whisper
           spotify-player
+          summarize
           tmux
           wacli
           xurl
@@ -21,6 +24,39 @@
   perSystem =
     { pkgs, ... }:
     let
+      blogwatcherVersion = "0.0.3";
+
+      gifgrepBinary = pkgs.stdenvNoCC.mkDerivation {
+        pname = "gifgrep";
+        version = "0.3.0";
+
+        src =
+          if pkgs.stdenv.hostPlatform.system == "x86_64-linux" then
+            pkgs.fetchurl {
+              url = "https://github.com/steipete/gifgrep/releases/download/v0.3.0/gifgrep_0.3.0_linux_amd64.tar.gz";
+              hash = "sha256-1GEH+3RRDj5TIqK4y2714nM4YAC7Uo3JuaQXG/JlJRE=";
+            }
+          else if pkgs.stdenv.hostPlatform.system == "aarch64-linux" then
+            pkgs.fetchurl {
+              url = "https://github.com/steipete/gifgrep/releases/download/v0.3.0/gifgrep_0.3.0_linux_arm64.tar.gz";
+              hash = "sha256-2YQDPikHTDi23AgkSTqgMxtZbYGrqsgENMaaesxQ6Qk=";
+            }
+          else
+            throw "gifgrep is only packaged for Linux in this configuration";
+
+        sourceRoot = ".";
+
+        installPhase = ''
+          runHook preInstall
+
+          install -Dm755 gifgrep "$out/bin/gifgrep"
+
+          runHook postInstall
+        '';
+      };
+
+      summarizeVersion = "0.20.1";
+
       xurlBinary = pkgs.stdenvNoCC.mkDerivation {
         pname = "xurl";
         version = "1.0.3";
@@ -43,6 +79,21 @@
     in
     {
       packages = {
+        blogwatcher = pkgs.buildGoModule {
+          pname = "blogwatcher";
+          version = blogwatcherVersion;
+
+          src = pkgs.fetchFromGitHub {
+            owner = "Hyaxia";
+            repo = "blogwatcher";
+            rev = "v${blogwatcherVersion}";
+            hash = "sha256-Zd3Pqv2gCB6EwSR5uh88aHEXtI49mmXSbKuVDf2vAGA=";
+          };
+
+          subPackages = [ "cmd/blogwatcher" ];
+          vendorHash = "sha256-TfcMKlr/mdElYLf2zw9iNLJgGVJzMVg97jJm015ClTQ=";
+        };
+
         clawhub = pkgs.buildNpmPackage {
           pname = "clawhub";
           version = "0.23.0";
@@ -52,6 +103,42 @@
           npmDepsHash = "sha256-urQt+gYtWxg93TVHj6357vFqmNQLIMiySDUW7edjhBE=";
           dontNpmBuild = true;
         };
+
+        gifgrep = gifgrepBinary;
+
+        summarize =
+          let
+            pnpm = pkgs.pnpm_10 or pkgs.pnpm;
+            src = pkgs.fetchFromGitHub {
+              owner = "steipete";
+              repo = "summarize";
+              rev = "v${summarizeVersion}";
+              hash = "sha256-HaL3/AnWB5EDd91gJh2HPlUiRMQc077tBnRkbvIi0Zw=";
+            };
+          in
+          pkgs.buildNpmPackage rec {
+            pname = "summarize";
+            version = summarizeVersion;
+
+            inherit src;
+
+            nativeBuildInputs = [ pnpm ];
+            npmConfigHook = pkgs.pnpmConfigHook;
+            dontNpmPrune = true;
+            postInstall = ''
+              cp -R packages "$out/lib/node_modules/@steipete/summarize/"
+              rm -f "$out/lib/node_modules/@steipete/summarize/node_modules/.pnpm/node_modules/@steipete/summarize-chrome-extension"
+            '';
+            npmDeps = pnpmDeps;
+            pnpmDeps = pkgs.fetchPnpmDeps {
+              pname = "summarize";
+              version = summarizeVersion;
+              inherit src;
+              inherit pnpm;
+              fetcherVersion = 3;
+              hash = "sha256-cUzTtxCzHtHoaLmxzeOeo2FJaqRCOxeLiKEbGXbP/oQ=";
+            };
+          };
 
         wacli = pkgs.buildGoModule {
           pname = "wacli";

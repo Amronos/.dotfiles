@@ -9,6 +9,7 @@
         usbutils
         wget
         curl
+        jq
         unzip
         zip
         xz
