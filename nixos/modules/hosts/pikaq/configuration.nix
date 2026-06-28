@@ -41,5 +41,7 @@
         OPENCLAW_NO_RESPAWN = "1";
         TERM = "xterm-256color";
       };
+
+      services.tailscale.enable = true;
     };
 }
