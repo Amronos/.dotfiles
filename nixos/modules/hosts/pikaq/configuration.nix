@@ -1,7 +1,7 @@
 { ... }:
 {
   flake.nixosModules.pikaqConfiguration =
-    { self, pkgs, ... }:
+    { self, ... }:
     {
       imports = [
         self.nixosModules.pikaqHardware
@@ -10,6 +10,7 @@
         self.nixosModules.fonts
         self.nixosModules.gitMinimal
         self.nixosModules.languages
+        self.nixosModules.openclawTools
         self.nixosModules.security
         self.nixosModules.utilities
         self.nixosModules.virtualisation
@@ -35,6 +36,9 @@
       };
 
       environment.variables = {
+        NODE_COMPILE_CACHE = "/var/tmp/openclaw-compile-cache";
+        NPM_CONFIG_PREFIX = "/root/.local";
+        OPENCLAW_NO_RESPAWN = "1";
         TERM = "xterm-256color";
       };
     };
