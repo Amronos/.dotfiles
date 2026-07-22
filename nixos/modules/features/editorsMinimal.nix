@@ -14,7 +14,6 @@
         with pkgs;
         with self.packages.${pkgs.stdenv.hostPlatform.system};
         [
-          codex
           myNeovim
           wakatime-cli
         ];
