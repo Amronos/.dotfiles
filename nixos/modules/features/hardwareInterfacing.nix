@@ -10,5 +10,7 @@
         platformio-core
         rpi-imager
       ];
+
+      services.udisks2.enable = true;
     };
 }
