@@ -1,7 +1,7 @@
 { ... }:
 {
   flake.nixosModules.pikaqConfiguration =
-    { self, config, ... }:
+    { self, ... }:
     {
       imports = [
         self.nixosModules.pikaqHardware
@@ -41,21 +41,5 @@
         OPENCLAW_NO_RESPAWN = "1";
         TERM = "xterm-256color";
       };
-
-      services.tailscale.enable = true;
-
-      networking.nftables.enable = true;
-      networking.firewall = {
-        enable = true;
-        trustedInterfaces = [ config.services.tailscale.interfaceName ];
-        allowedUDPPorts = [ config.services.tailscale.port ];
-      };
-
-      systemd.services.tailscaled.serviceConfig.Environment = [
-        "TS_DEBUG_FIREWALL_MODE=nftables"
-      ];
-
-      systemd.network.wait-online.enable = false;
-      boot.initrd.systemd.network.wait-online.enable = false;
     };
 }
