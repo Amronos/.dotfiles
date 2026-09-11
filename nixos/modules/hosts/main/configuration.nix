@@ -1,7 +1,7 @@
 { ... }:
 {
   flake.nixosModules.mainConfiguration =
-    { self, ... }:
+    { self, config, ... }:
     {
       imports = [
         self.nixosModules.mainHardware
@@ -28,6 +28,26 @@
       ];
 
       networking.hostName = "main";
+
+      services.tailscale.extraSetFlags = [ "--operator=amronos" ];
+
+      systemd.tmpfiles.rules = [
+        "d /home/amronos/taildrop 0755 amronos users -"
+      ];
+
+      systemd.services.taildrop = {
+        description = "Receive Taildrop files";
+        after = [ "tailscaled-set.service" ];
+        requires = [ "tailscaled-set.service" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          User = "amronos";
+          Group = "users";
+          ExecStart = "${config.services.tailscale.package}/bin/tailscale file get --loop --conflict=rename /home/amronos/taildrop";
+          Restart = "on-failure";
+          RestartSec = 5;
+        };
+      };
 
       # See https://wiki.nixos.org/wiki/FAQ/When_do_I_update_stateVersion before changing this value.
       system.stateVersion = "25.05"; # Did you read the comment?

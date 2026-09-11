@@ -24,5 +24,7 @@
       networking.timeServers = options.networking.timeServers.default ++ [ "time.windows.com" ];
 
       i18n.defaultLocale = "en_US.UTF-8";
+
+      services.tailscale.enable = true;
     };
 }
