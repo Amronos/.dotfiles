@@ -49,6 +49,24 @@
         };
       };
 
+      systemd.services.tailscale-serve = {
+        description = "Expose local web apps through Tailscale Serve";
+        after = [ "tailscaled-set.service" ];
+        requires = [ "tailscaled-set.service" ];
+        wantedBy = [ "multi-user.target" ];
+        script = ''
+          ${config.services.tailscale.package}/bin/tailscale serve reset
+          ${config.services.tailscale.package}/bin/tailscale serve --bg --yes --https=4321 http://127.0.0.1:4321
+          ${config.services.tailscale.package}/bin/tailscale serve --bg --yes --https=5173 http://127.0.0.1:5173
+          ${config.services.tailscale.package}/bin/tailscale serve --bg --yes --https=17731 http://127.0.0.1:17731
+        '';
+        serviceConfig = {
+          Type = "oneshot";
+          Restart = "on-failure";
+          RestartSec = 5;
+        };
+      };
+
       # See https://wiki.nixos.org/wiki/FAQ/When_do_I_update_stateVersion before changing this value.
       system.stateVersion = "25.05"; # Did you read the comment?
     };
