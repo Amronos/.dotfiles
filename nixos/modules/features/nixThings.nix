@@ -14,6 +14,12 @@
 
       # Allows to run unpatched dynamic binaries
       programs.nix-ld.enable = true;
+      programs.nix-ld.libraries = with pkgs; [
+        libglvnd
+        vulkan-loader
+        wayland
+      ];
+      environment.sessionVariables.XKB_CONFIG_ROOT = "${pkgs.xkeyboard-config}/share/X11/xkb";
 
       # Easily execute appimages
       programs.appimage = {
