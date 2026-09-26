@@ -57,6 +57,11 @@
 
           xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
 
+          input.touchpad = {
+            tap = _: { };
+            natural-scroll = _: { };
+          };
+
           binds = {
             "Mod+Shift+Slash".show-hotkey-overlay = _: { };
 
