@@ -653,7 +653,7 @@
     },
     "wallpaper": {
         "automationEnabled": false,
-        "directory": "/home/amronos/Pictures/Wallpapers",
+        "directory": "/home/amronos/.dotfiles/noctalia/wallpapers",
         "enableMultiMonitorDirectories": false,
         "enabled": true,
         "favorites": [
