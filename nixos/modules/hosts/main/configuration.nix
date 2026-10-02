@@ -1,7 +1,13 @@
 { ... }:
 {
   flake.nixosModules.mainConfiguration =
-    { self, config, ... }:
+    {
+      self,
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       imports = [
         self.nixosModules.mainHardware
@@ -31,6 +37,26 @@
 
       services.tailscale.extraSetFlags = [ "--operator=amronos" ];
 
+      users.users.amronos.linger = true;
+
+      systemd.user.services.agent-browser-dashboard = {
+        description = "Agent Browser dashboard";
+        wantedBy = [ "default.target" ];
+        unitConfig.ConditionUser = "amronos";
+        script = ''
+          dashboardHost="$(${config.services.tailscale.package}/bin/tailscale status --json | ${lib.getExe pkgs.jq} -er '.Self.DNSName | select(type == "string" and length > 0) | rtrimstr(".")')"
+          exec ${lib.getExe pkgs.agent-browser} dashboard start --port 4848 --allowed-origins "https://$dashboardHost:4848"
+        '';
+        serviceConfig = {
+          Type = "forking";
+          PIDFile = "%t/agent-browser/dashboard.pid";
+          ExecStartPre = "${lib.getExe pkgs.agent-browser} dashboard stop";
+          ExecStop = "${lib.getExe pkgs.agent-browser} dashboard stop";
+          Restart = "on-failure";
+          RestartSec = 5;
+        };
+      };
+
       systemd.tmpfiles.rules = [
         "d /home/amronos/taildrop 0755 amronos users -"
       ];
@@ -58,6 +84,7 @@
           ${config.services.tailscale.package}/bin/tailscale serve reset
           ${config.services.tailscale.package}/bin/tailscale serve --bg --yes --https=4321 http://127.0.0.1:4321
           ${config.services.tailscale.package}/bin/tailscale serve --bg --yes --https=5173 http://127.0.0.1:5173
+          ${config.services.tailscale.package}/bin/tailscale serve --bg --yes --https=4848 http://127.0.0.1:4848
           ${config.services.tailscale.package}/bin/tailscale serve --bg --yes --https=17731 http://127.0.0.1:17731
         '';
         serviceConfig = {
