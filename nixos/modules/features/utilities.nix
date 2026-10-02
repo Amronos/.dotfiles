@@ -4,6 +4,7 @@
     { pkgs, ... }:
     {
       environment.systemPackages = with pkgs; [
+        agent-browser
         fastfetch
         tree
         usbutils
