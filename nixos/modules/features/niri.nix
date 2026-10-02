@@ -72,6 +72,7 @@
             "Mod+S".spawn = ipc "controlCenter" "toggle";
             "Mod+Shift+Comma".spawn = ipc "settings" "toggle";
             "Mod+Shift+Space".spawn = ipc "launcher" "clipboard";
+            "Mod+V".spawn = ipc "launcher" "clipboard";
 
             "XF86AudioRaiseVolume" = withProps { allow-when-locked = true; } {
               spawn = ipc "volume" "increase";
@@ -184,7 +185,6 @@
             "Mod+Ctrl+Shift+R".switch-preset-window-height = _: { };
             "Mod+Ctrl+R".reset-window-height = _: { };
 
-            "Mod+F".maximize-column = _: { };
             "Mod+Shift+F".fullscreen-window = _: { };
             "Mod+M".maximize-window-to-edges = _: { };
             "Mod+Ctrl+F".expand-column-to-available-width = _: { };
@@ -197,7 +197,6 @@
             "Mod+Shift+Minus".set-window-height = "-10%";
             "Mod+Shift+Equal".set-window-height = "+10%";
 
-            "Mod+V".toggle-window-floating = _: { };
             "Mod+Shift+V".switch-focus-between-floating-and-tiling = _: { };
             "Mod+W".toggle-column-tabbed-display = _: { };
 
