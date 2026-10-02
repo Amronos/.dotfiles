@@ -196,6 +196,7 @@
             "Mod+Shift+Minus".set-window-height = "-10%";
             "Mod+Shift+Equal".set-window-height = "+10%";
 
+            "Mod+X".switch-focus-between-floating-and-tiling = _: { };
             "Mod+W".toggle-column-tabbed-display = _: { };
 
             "Print".screenshot = _: { };
