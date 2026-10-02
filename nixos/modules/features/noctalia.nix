@@ -9,11 +9,6 @@
       packages.noctalia = inputs.wrapper-modules.wrappers.noctalia-shell.wrap {
         inherit pkgs;
         outOfStoreConfig = configDir;
-        settings = {
-          appLauncher.enableClipboardHistory = true;
-          general.avatarImage = "${configDir}/avatar.svg";
-          wallpaper.directory = "${configDir}/wallpapers";
-        };
       };
     };
 }
