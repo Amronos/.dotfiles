@@ -1,4 +1,3 @@
-- If you need subagents, use `kimi-k3` on `max` reasoning through the `sprocket` CLI.
 - Skip GPG signing on commits unless requested otherwise.
 - Whenever using my account to write something on GitHub, mention "Written by <Model Name> (<model-slug>) through <Harness>."
 - Never work in the main worktree.
