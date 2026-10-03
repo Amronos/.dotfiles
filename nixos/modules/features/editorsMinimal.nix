@@ -10,6 +10,8 @@
       ...
     }:
     {
+      imports = [ self.nixosModules.agentInstructions ];
+
       environment.systemPackages =
         with pkgs;
         with self.packages.${pkgs.stdenv.hostPlatform.system};
