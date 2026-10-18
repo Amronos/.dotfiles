@@ -10,6 +10,7 @@
         self.nixosModules.fonts
         self.nixosModules.gitMinimal
         self.nixosModules.languages
+        self.nixosModules.sshKeys
         self.nixosModules.tailscale
         self.nixosModules.utilities
         self.nixosModules.virtualisation
@@ -31,9 +32,6 @@
           "docker"
           "wheel"
         ];
-        openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILN+5Sc1fl0TvwLzh4m0xtntO4+ZwkWG3IhGkxR7W/yP amronos@dev-pc"
-        ];
       };
       security.sudo.wheelNeedsPassword = false;
       nix.settings.trusted-users = [
@@ -43,7 +41,6 @@
 
       environment.systemPackages = with pkgs; [
         ghostty.terminfo
-        tmux
       ];
 
       programs.bash = {
