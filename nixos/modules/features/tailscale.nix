@@ -8,7 +8,10 @@
     {
       services.tailscale = {
         enable = true;
-        extraSetFlags = [ "--operator=amronos" ];
+        extraSetFlags = [
+          "--operator=amronos"
+          "--ssh"
+        ];
       };
 
       systemd.tmpfiles.rules = [

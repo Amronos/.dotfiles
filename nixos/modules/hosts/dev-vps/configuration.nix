@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.nixosModules.devVpsConfiguration =
-    { self, pkgs, ... }:
+    {
+      self,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       imports = [
         self.nixosModules.devVpsHardware
@@ -10,7 +15,6 @@
         self.nixosModules.fonts
         self.nixosModules.gitMinimal
         self.nixosModules.languages
-        self.nixosModules.sshKeys
         self.nixosModules.tailscale
         self.nixosModules.utilities
         self.nixosModules.virtualisation
@@ -19,11 +23,8 @@
       networking.hostName = "dev-vps";
       time.timeZone = "Asia/Kolkata";
 
-      # SSH is reachable only over Tailscale; the EC2 security group allows no inbound traffic.
-      services.openssh = {
-        openFirewall = false;
-        settings.PasswordAuthentication = false;
-      };
+      # Tailscale SSH replaces sshd; SSM is the fallback if Tailscale breaks.
+      services.openssh.enable = lib.mkForce false;
       networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
       users.users.amronos = {

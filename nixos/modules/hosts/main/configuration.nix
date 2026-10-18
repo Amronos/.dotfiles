@@ -21,7 +21,6 @@
         self.nixosModules.printing
         self.nixosModules.security
         self.nixosModules.sound
-        self.nixosModules.sshKeys
         self.nixosModules.tailscale
         self.nixosModules.terminal
         self.nixosModules.users
