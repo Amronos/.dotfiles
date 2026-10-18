@@ -23,8 +23,9 @@
       networking.hostName = "dev-vps";
       time.timeZone = "Asia/Kolkata";
 
-      # Tailscale SSH replaces sshd; SSM is the fallback if Tailscale breaks.
+      # Tailscale SSH replaces sshd; the EC2 serial console is the fallback if Tailscale breaks.
       services.openssh.enable = lib.mkForce false;
+      services.amazon-ssm-agent.enable = lib.mkForce false;
       networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
       users.users.amronos = {
