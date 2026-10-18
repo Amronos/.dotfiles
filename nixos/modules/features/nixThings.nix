@@ -18,6 +18,28 @@
         libglvnd
         vulkan-loader
         wayland
+
+        # Chrome libraries
+        alsa-lib
+        at-spi2-core
+        cairo
+        cups
+        dbus
+        expat
+        glib
+        libgbm
+        libx11
+        libxcb
+        libxcomposite
+        libxdamage
+        libxext
+        libxfixes
+        libxkbcommon
+        libxrandr
+        nspr
+        nss
+        pango
+        systemd
       ];
       environment.sessionVariables.XKB_CONFIG_ROOT = "${pkgs.xkeyboard-config}/share/X11/xkb";
 
