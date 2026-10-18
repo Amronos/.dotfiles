@@ -4,18 +4,18 @@
     { pkgs, ... }:
     {
       environment.systemPackages = with pkgs; [
-        agent-browser
-        fastfetch
-        tree
-        usbutils
-        wget
         curl
+        fastfetch
         jq
-        unzip
-        zip
-        xz
         ripgrep
+        tmux
+        tree
+        unzip
+        usbutils
         vcs2l
+        wget
+        xz
+        zip
       ];
     };
 }
