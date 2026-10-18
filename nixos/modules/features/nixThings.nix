@@ -19,7 +19,7 @@
         vulkan-loader
         wayland
 
-        # Chrome for Testing, as downloaded by agent-browser
+        # Chrome libraries
         alsa-lib
         at-spi2-core
         cairo
