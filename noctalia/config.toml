@@ -1,0 +1,16 @@
+[theme]
+mode = "light"
+builtin = "Tokyo-Night"
+
+[shell]
+avatar_path = "/home/amronos/.dotfiles/noctalia/avatar.svg"
+telemetry_enabled = true
+
+[location]
+address = "Gurugram"
+
+[nightlight]
+enabled = true
+
+[wallpaper]
+directory = "/home/amronos/.dotfiles/noctalia/wallpapers"
