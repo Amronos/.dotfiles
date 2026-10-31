@@ -3,6 +3,10 @@
   flake.nixosModules.desktop =
     { pkgs, self, ... }:
     {
+      imports = [
+        self.nixosModules.noctalia
+      ];
+
       services.xserver.enable = true;
       services.displayManager.gdm.enable = true;
       programs.niri = {
@@ -15,7 +19,6 @@
       services.gvfs.enable = true;
 
       environment.systemPackages = [
-        self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia
         pkgs.nautilus
         pkgs.qt5.qtwayland
         pkgs.xwayland-satellite

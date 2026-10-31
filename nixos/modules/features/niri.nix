@@ -4,18 +4,17 @@
     {
       lib,
       pkgs,
-      self',
       ...
     }:
     let
-      noctalia = lib.getExe self'.packages.noctalia;
-      ipc = service: action: [
-        noctalia
-        "ipc"
-        "call"
-        service
-        action
-      ];
+      noctalia = lib.getExe pkgs.noctalia;
+      msg =
+        command:
+        [
+          noctalia
+          "msg"
+        ]
+        ++ lib.splitString " " command;
       workspaceBinds = builtins.listToAttrs (
         builtins.concatMap (
           number:
@@ -66,33 +65,27 @@
             "Mod+Shift+Slash".show-hotkey-overlay = _: { };
 
             "Mod+T".spawn = lib.getExe pkgs.ghostty;
-            "Mod+D".spawn = ipc "launcher" "toggle";
-            "Super+Alt+L".spawn = ipc "lockScreen" "lock";
+            "Mod+D".spawn = msg "panel-toggle launcher";
+            "Super+Alt+L".spawn = msg "session lock";
 
-            "Mod+S".spawn = ipc "controlCenter" "toggle";
-            "Mod+Shift+Comma".spawn = ipc "settings" "toggle";
-            "Mod+Shift+Space".spawn = ipc "launcher" "clipboard";
-            "Mod+V".spawn = ipc "launcher" "clipboard";
+            "Mod+S".spawn = msg "panel-toggle control-center";
+            "Mod+Shift+Comma".spawn = msg "settings-toggle";
+            "Mod+Shift+Space".spawn = msg "panel-toggle clipboard";
+            "Mod+V".spawn = msg "panel-toggle clipboard";
 
-            "XF86AudioRaiseVolume" = withProps { allow-when-locked = true; } {
-              spawn = ipc "volume" "increase";
-            };
-            "XF86AudioLowerVolume" = withProps { allow-when-locked = true; } {
-              spawn = ipc "volume" "decrease";
-            };
-            "XF86AudioMute" = withProps { allow-when-locked = true; } { spawn = ipc "volume" "muteOutput"; };
-            "XF86AudioMicMute" = withProps { allow-when-locked = true; } { spawn = ipc "volume" "muteInput"; };
+            "XF86AudioRaiseVolume" = withProps { allow-when-locked = true; } { spawn = msg "volume-up"; };
+            "XF86AudioLowerVolume" = withProps { allow-when-locked = true; } { spawn = msg "volume-down"; };
+            "XF86AudioMute" = withProps { allow-when-locked = true; } { spawn = msg "volume-mute"; };
+            "XF86AudioMicMute" = withProps { allow-when-locked = true; } { spawn = msg "mic-mute"; };
 
-            "XF86AudioPlay" = withProps { allow-when-locked = true; } { spawn = ipc "media" "playPause"; };
-            "XF86AudioPause" = withProps { allow-when-locked = true; } { spawn = ipc "media" "playPause"; };
-            "XF86AudioPrev" = withProps { allow-when-locked = true; } { spawn = ipc "media" "previous"; };
-            "XF86AudioNext" = withProps { allow-when-locked = true; } { spawn = ipc "media" "next"; };
+            "XF86AudioPlay" = withProps { allow-when-locked = true; } { spawn = msg "media toggle"; };
+            "XF86AudioPause" = withProps { allow-when-locked = true; } { spawn = msg "media toggle"; };
+            "XF86AudioPrev" = withProps { allow-when-locked = true; } { spawn = msg "media previous"; };
+            "XF86AudioNext" = withProps { allow-when-locked = true; } { spawn = msg "media next"; };
 
-            "XF86MonBrightnessUp" = withProps { allow-when-locked = true; } {
-              spawn = ipc "brightness" "increase";
-            };
+            "XF86MonBrightnessUp" = withProps { allow-when-locked = true; } { spawn = msg "brightness-up"; };
             "XF86MonBrightnessDown" = withProps { allow-when-locked = true; } {
-              spawn = ipc "brightness" "decrease";
+              spawn = msg "brightness-down";
             };
 
             "Mod+O" = withProps { repeat = false; } { toggle-overview = _: { }; };
