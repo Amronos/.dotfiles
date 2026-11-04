@@ -10,7 +10,10 @@
       ...
     }:
     {
-      imports = [ self.nixosModules.agentInstructions ];
+      imports = [
+        self.nixosModules.agentInstructions
+        self.nixosModules.agentSkills
+      ];
 
       environment.systemPackages =
         with pkgs;
