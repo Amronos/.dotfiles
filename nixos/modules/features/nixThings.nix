@@ -80,6 +80,14 @@
       };
       nix.settings.auto-optimise-store = true;
 
+      # Sorts before systemd's tmp.conf, so this replaces its 10d /tmp age.
+      systemd.tmpfiles.settings."10-tmp-age"."/tmp".q = {
+        mode = "1777";
+        user = "root";
+        group = "root";
+        age = "3d";
+      };
+
       nixpkgs.config.allowUnfree = true;
 
       environment.systemPackages = with pkgs; [
