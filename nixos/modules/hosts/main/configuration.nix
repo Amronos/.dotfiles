@@ -30,6 +30,11 @@
 
       networking.hostName = "main";
 
+      # Navisteer (8c:bf:ea:8f:51:98): update the source IP if its DHCP lease changes.
+      networking.firewall.extraCommands = ''
+        iptables -A nixos-fw -i wlp1s0 -s 10.3.17.171/32 -p tcp --dport 7447 -j nixos-fw-accept
+      '';
+
       # See https://wiki.nixos.org/wiki/FAQ/When_do_I_update_stateVersion before changing this value.
       system.stateVersion = "25.05"; # Did you read the comment?
     };
