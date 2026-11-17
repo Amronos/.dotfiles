@@ -42,6 +42,7 @@
           ${tailscale} serve reset
           ${tailscale} serve --bg --yes --https=4321 http://127.0.0.1:4321
           ${tailscale} serve --bg --yes --https=5173 http://127.0.0.1:5173
+          ${tailscale} serve --bg --yes --https=8443 http://127.0.0.1:8080
           ${tailscale} serve --bg --yes --https=17731 http://127.0.0.1:17731
         '';
         serviceConfig = {
