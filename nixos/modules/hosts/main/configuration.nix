@@ -30,6 +30,7 @@
 
       networking.hostName = "main";
 
+      networking.firewall.allowedTCPPorts = [ 7447 ];
       networking.firewall.allowedUDPPorts = [ 7447 ];
 
       # See https://wiki.nixos.org/wiki/FAQ/When_do_I_update_stateVersion before changing this value.
