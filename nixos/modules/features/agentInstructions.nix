@@ -47,8 +47,8 @@
         "%h/.cursor/rules"
         "%h/.cursor/plugins"
         "%h/.cursor/plugins/local"
-        "%E"
-        "%E/opencode"
+        "%h/.config"
+        "%h/.config/opencode"
       ];
     in
     {
@@ -56,7 +56,7 @@
         "L+ %h/.agents/AGENTS.md - - - - ${instructions}"
         "L+ %h/.codex/AGENTS.md - - - - ${instructions}"
         "L+ %h/.claude/CLAUDE.md - - - - ${instructions}"
-        "L+ %E/opencode/AGENTS.md - - - - ${instructions}"
+        "L+ %h/.config/opencode/AGENTS.md - - - - ${instructions}"
       ];
 
       systemd.user.services.cursor-global-agent-instructions = {
