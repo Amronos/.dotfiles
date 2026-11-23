@@ -1,67 +1,68 @@
-{ ... }:
+{ inputs, ... }:
 {
   flake.nixosModules.mainHardware =
     {
-      config,
       lib,
       modulesPath,
       pkgs,
       ...
     }:
-
+    let
+      btrfsSubvolume = subvolume: {
+        device = "/dev/mapper/cryptroot";
+        fsType = "btrfs";
+        options = [
+          "subvol=${subvolume}"
+          "compress=zstd"
+          "noatime"
+        ];
+      };
+    in
     {
       imports = [
         (modulesPath + "/installer/scan/not-detected.nix")
+        inputs.nixos-hardware.nixosModules.framework-intel-core-ultra-series3
       ];
 
       boot.initrd.availableKernelModules = [
         "nvme"
+        "sd_mod"
+        "thunderbolt"
+        "usb_storage"
         "xhci_pci"
-        "ahci"
-        "rtsx_usb_sdmmc"
       ];
-      boot.initrd.kernelModules = [ ];
-      boot.kernelModules = [ "kvm-amd" ];
-      boot.extraModulePackages = [ ];
+      boot.kernelModules = [ "kvm-intel" ];
+      # Framework recommends the non-LTS kernel for Panther Lake.
+      boot.kernelPackages = pkgs.linuxPackages_latest;
 
-      # Use the systemd-boot EFI boot loader.
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
 
-      fileSystems."/" = {
-        device = "/dev/disk/by-uuid/57c6c56e-9d23-49e7-8281-bba6715b3774";
-        fsType = "ext4";
+      # Partitions are found by the labels set during install, so no UUIDs are needed here.
+      boot.initrd.luks.devices.cryptroot = {
+        device = "/dev/disk/by-label/cryptroot";
+        allowDiscards = true;
       };
 
+      fileSystems."/" = btrfsSubvolume "@root";
+      fileSystems."/home" = btrfsSubvolume "@home";
+      fileSystems."/nix" = btrfsSubvolume "@nix";
       fileSystems."/boot" = {
-        device = "/dev/disk/by-uuid/BB52-4123";
+        device = "/dev/disk/by-label/BOOT";
         fsType = "vfat";
         options = [
-          "fmask=0022"
-          "dmask=0022"
+          "fmask=0077"
+          "dmask=0077"
         ];
       };
 
-      swapDevices = [
-        { device = "/dev/disk/by-uuid/9b798441-cb03-41e3-9ed0-8a63c3f09093"; }
-      ];
+      services.btrfs.autoScrub.enable = true;
+      zramSwap.enable = true;
+
+      # Panther Lake graphics are only supported by the xe driver.
+      hardware.intelgpu.driver = "xe";
+      hardware.graphics.enable32Bit = true;
 
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-      hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-      # Setup Graphics
-      hardware.graphics = {
-        enable = true;
-        enable32Bit = true;
-      };
-      services.xserver.videoDrivers = [ "amdgpu" ];
-
-      # Enable touchpad support
-      services.libinput.enable = true;
-
-      environment.systemPackages = with pkgs; [
-        libglvnd
-        mesa
-      ];
     };
 }

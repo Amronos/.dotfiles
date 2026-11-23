@@ -6,6 +6,8 @@
       networking.networkmanager.enable = true;
       networking.firewall = {
         enable = true;
+        allowedTCPPorts = [ 7447 ];
+        allowedUDPPorts = [ 7447 ];
         extraCommands = ''
           iptables -A INPUT -p udp -d 224.0.0.0/4 -j ACCEPT
           iptables -A INPUT -p udp -s 224.0.0.0/4 -j ACCEPT
