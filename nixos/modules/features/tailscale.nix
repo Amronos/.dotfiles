@@ -39,6 +39,7 @@
         requires = [ "tailscaled-set.service" ];
         wantedBy = [ "multi-user.target" ];
         script = ''
+          ${tailscale} wait
           ${tailscale} serve reset
           ${tailscale} serve --bg --yes --https=4321 http://127.0.0.1:4321
           ${tailscale} serve --bg --yes --https=5173 http://127.0.0.1:5173
