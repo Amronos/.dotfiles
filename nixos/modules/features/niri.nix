@@ -56,9 +56,13 @@
 
           xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
 
-          input.touchpad = {
-            tap = _: { };
-            natural-scroll = _: { };
+          input = {
+            touchpad = {
+              tap = _: { };
+              natural-scroll = _: { };
+            };
+            # Leave the power key to logind, which ignores it.
+            disable-power-key-handling = _: { };
           };
 
           binds = {
