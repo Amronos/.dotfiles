@@ -47,6 +47,7 @@
       fileSystems."/" = btrfsSubvolume "@root";
       fileSystems."/home" = btrfsSubvolume "@home";
       fileSystems."/nix" = btrfsSubvolume "@nix";
+      fileSystems."/swap" = btrfsSubvolume "@swap";
       fileSystems."/boot" = {
         device = "/dev/disk/by-label/BOOT";
         fsType = "vfat";
@@ -57,7 +58,10 @@
       };
 
       services.btrfs.autoScrub.enable = true;
+
+      # zram has higher priority, so the swapfile only takes overflow.
       zramSwap.enable = true;
+      swapDevices = [ { device = "/swap/swapfile"; } ];
 
       # Panther Lake graphics are only supported by the xe driver.
       hardware.intelgpu.driver = "xe";
