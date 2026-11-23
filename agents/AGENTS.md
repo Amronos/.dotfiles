@@ -2,3 +2,4 @@
 - Whenever using my account to write something on GitHub, mention "Written by <Model Name> (<model-slug>) through <Harness>."
 - Never work in the main worktree.
 - Always create/update PRs with your changes as needed.
+- Feel free to commit, branch, and spin up worktrees as you please.
