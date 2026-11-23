@@ -21,6 +21,7 @@
       environment.systemPackages = [
         pkgs.nautilus
         pkgs.qt5.qtwayland
+        pkgs.wl-clipboard
         pkgs.xwayland-satellite
       ];
     };
