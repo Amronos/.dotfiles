@@ -2,6 +2,12 @@
 mode = "light"
 builtin = "Tokyo-Night"
 
+[bar.default]
+margin_ends = 0
+
+[osd.kinds]
+lock_keys = false
+
 [shell]
 avatar_path = "/home/amronos/.dotfiles/noctalia/avatar.svg"
 telemetry_enabled = true
@@ -14,3 +20,6 @@ enabled = true
 
 [wallpaper]
 directory = "/home/amronos/.dotfiles/noctalia/wallpapers"
+
+[wallpaper.default]
+path = "/home/amronos/.dotfiles/noctalia/wallpapers/wallpaper.jpg"
