@@ -47,5 +47,10 @@
         stm32cubemx
         zed-editor-fhs
       ];
+
+      systemd.user.tmpfiles.rules = [
+        "d %h/.config/zed :0700 - - -"
+        "L+ %h/.config/zed/settings.json - - - - %h/.dotfiles/zed/settings.json"
+      ];
     };
 }
