@@ -20,11 +20,8 @@
         "ahci"
         "rtsx_usb_sdmmc"
       ];
-      boot.initrd.kernelModules = [ ];
       boot.kernelModules = [ "kvm-amd" ];
-      boot.extraModulePackages = [ ];
 
-      # Use the systemd-boot EFI boot loader.
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
 
@@ -49,14 +46,12 @@
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
       hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-      # Setup Graphics
       hardware.graphics = {
         enable = true;
         enable32Bit = true;
       };
       services.xserver.videoDrivers = [ "amdgpu" ];
 
-      # Enable touchpad support
       services.libinput.enable = true;
 
       environment.systemPackages = with pkgs; [
