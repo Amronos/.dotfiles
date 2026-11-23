@@ -34,9 +34,6 @@
   "vim_mode": true,
   "base_keymap": "VSCode",
   "agent_servers": {
-    "cursor": {
-      "type": "registry",
-    },
     "codex-acp": {
       "type": "registry",
     },
