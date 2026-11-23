@@ -20,7 +20,6 @@
       environment.systemPackages = with pkgs; [
         arduino-ide
         blender
-        code-cursor
         freecad
         (kicad.override {
           compressStep = false;
